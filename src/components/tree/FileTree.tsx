@@ -2,11 +2,13 @@ import vaultData from '../../data/vault-data.json';
 import type { VaultNode } from '../../types/vault';
 import { TreeNode } from './TreeNode';
 import { useTreeState } from './TreeStateContext';
+import { useTreeKeyboardNav } from '../../hooks/useTreeKeyboardNav';
 
 const forest = vaultData as VaultNode[];
 
 export function FileTree() {
   const { expanded, setExpanded, selectedId, setSelectedId } = useTreeState();
+  const { handleKeyDown } = useTreeKeyboardNav(forest);
 
   const handleToggle = (id: string) => {
     setExpanded((prev) => {
@@ -21,7 +23,12 @@ export function FileTree() {
   };
 
   return (
-    <div role="tree" aria-label="Vault" className="flex flex-col gap-0.5">
+    <div
+      role="tree"
+      aria-label="Vault"
+      className="flex flex-col gap-0.5"
+      onKeyDown={handleKeyDown}
+    >
       {forest.map((node) => (
         <TreeNode
           key={node.id}

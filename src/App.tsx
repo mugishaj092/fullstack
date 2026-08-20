@@ -1,5 +1,6 @@
 import { FileTree } from './components/tree/FileTree'
-import { TreeStateProvider, useTreeState } from './components/tree/TreeStateContext'
+import { TreeStateProvider } from './components/tree/TreeStateProvider'
+import { useTreeState } from './components/tree/TreeStateContext'
 import { PropertiesPanel } from './components/properties/PropertiesPanel'
 import vaultData from './data/vault-data.json'
 import type { VaultNode } from './types/vault'
