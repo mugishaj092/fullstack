@@ -36,10 +36,6 @@ function StatCard({ label, value }: { label: string; value: string }) {
   );
 }
 
-/**
- * A folder's own direct contents (subfolders and files both, folders first) when one is selected;
- * every file across the whole vault when nothing is selected.
- */
 function DocumentsTable({ folderNode }: { folderNode: VaultFolder | null }) {
   const { setSelectedId } = useTreeState();
   const [filter, setFilter] = useState<FileFilter>('All');

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { TreeStateContext } from './TreeStateContext';
 
-/** Owns expanded/selectedId/focusedId so FileTree and its siblings share one source of truth. */
 export function TreeStateProvider({ children }: { children: ReactNode }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedId, setSelectedId] = useState<string | null>(null);

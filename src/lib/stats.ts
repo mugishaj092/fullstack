@@ -3,11 +3,6 @@ import { parseSizeToKB } from './size';
 
 const statsCache = new WeakMap<VaultNode, NodeStats>();
 
-/**
- * Recursive, post-order: a folder's stats are the sum of its children's stats,
- * each resolved before the parent totals them. Memoized per node object since
- * vault-data.json is static for the lifetime of the app.
- */
 export function computeStats(node: VaultNode): NodeStats {
   const cached = statsCache.get(node);
   if (cached) return cached;

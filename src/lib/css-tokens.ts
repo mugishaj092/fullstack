@@ -3,11 +3,6 @@ export interface CssVariable {
   value: string;
 }
 
-/**
- * Discovers every custom property declared on `:root` by scanning loaded stylesheets (no
- * hardcoded token list), then reads each one's live value via getComputedStyle. This is how
- * spec-09's design-system page stays in sync with globals.css without duplicating its values.
- */
 function discoverRootVariableNames(): string[] {
   const names = new Set<string>();
 
@@ -16,7 +11,7 @@ function discoverRootVariableNames(): string[] {
     try {
       rules = sheet.cssRules;
     } catch {
-      continue; // cross-origin stylesheet; nothing we can read
+      continue;
     }
 
     for (const rule of Array.from(rules)) {
@@ -34,11 +29,6 @@ function discoverRootVariableNames(): string[] {
 
 const COLOR_VALUE_PATTERN = /^(oklch|oklab|rgb|rgba|hsl|hsla|#)/i;
 
-/**
- * Every `:root` custom property that resolves to a color, excluding the `--color-*`/`--radius-*`/
- * `--font-*` names Tailwind's `@theme inline` block generates as plumbing for utility classes —
- * those just re-point at the real tokens below and would otherwise show up as literal duplicates.
- */
 export function getColorTokens(): CssVariable[] {
   const computed = getComputedStyle(document.documentElement);
   return discoverRootVariableNames()

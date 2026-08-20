@@ -7,7 +7,6 @@ export interface TreeStateContextValue {
   setSelectedId: Dispatch<SetStateAction<string | null>>;
   focusedId: string | null;
   setFocusedId: Dispatch<SetStateAction<string | null>>;
-  /** Ref-setter factory so each recursive TreeNode row can register its DOM node for keyboard-focus restoration. */
   registerRef: (id: string) => (el: HTMLElement | null) => void;
   query: string;
   setQuery: Dispatch<SetStateAction<string>>;
@@ -15,7 +14,6 @@ export interface TreeStateContextValue {
 
 export const TreeStateContext = createContext<TreeStateContextValue | null>(null);
 
-/** Lets spec-05 (properties), spec-06 (keyboard) and spec-07 (search) reach tree state without prop-drilling. */
 export function useTreeState(): TreeStateContextValue {
   const ctx = useContext(TreeStateContext);
   if (!ctx) throw new Error('useTreeState must be used within a TreeStateContext.Provider');

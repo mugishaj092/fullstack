@@ -6,7 +6,6 @@ interface PropertiesPanelProps {
   node: VaultNode | null;
 }
 
-/** Derives a type label from the filename's extension — e.g. "Email.pdf" -> "PDF". No invented MIME types. */
 function getFileTypeLabel(name: string): string {
   const ext = name.split('.').pop();
   return ext ? ext.toUpperCase() : name.toUpperCase();

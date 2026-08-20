@@ -1,4 +1,3 @@
-/** Parses "4.2MB" / "45KB" / "1.2GB" into KB (decimal, not binary — matches the source data). */
 export function parseSizeToKB(size: string): number {
   const match = /^([\d.]+)\s*(KB|MB|GB)$/i.exec(size.trim());
   if (!match) return 0;

@@ -3,32 +3,12 @@ import type { VaultNode } from '../types/vault';
 import { flattenVisible } from '../lib/tree';
 import { useTreeState } from '../components/tree/TreeStateContext';
 
-/**
- * Makes the tree navigable with just a keyboard: Up/Down move focus between rows,
- * Right expands a folder (or steps into it if already open), Left collapses a folder
- * (or jumps up to its parent), and Enter selects the focused row.
- *
- * The tricky part is that the tree is nested, but only *expanded* folders show their
- * children — so "the next row down" isn't just "the next item in the data," it depends
- * on what's currently open. `flattenVisible` (spec-03) solves that by turning the nested
- * tree into a single top-to-bottom list of exactly what's on screen right now. Once we
- * have that list, arrow-key navigation is just moving an index up or down it.
- *
- * `effectiveExpanded` (raw `expanded` plus any search-forced folders, spec-07) is what
- * decides which rows are visible; Left/Right still read and write the real `expanded`
- * state from context, so search never overwrites what the user manually opened/closed.
- */
 export function useTreeKeyboardNav(rootNodes: VaultNode[], effectiveExpanded: Set<string>) {
   const { expanded, setExpanded, setSelectedId, focusedId, setFocusedId } = useTreeState();
-
-  // Nothing is focused when the tree first mounts — start on the first row so arrow
-  // keys have somewhere to move from.
   useEffect(() => {
     if (focusedId === null && rootNodes[0]) {
       setFocusedId(rootNodes[0].id);
     }
-    // Only seed the initial focus once, on mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const visibleRows = useMemo(
@@ -39,12 +19,10 @@ export function useTreeKeyboardNav(rootNodes: VaultNode[], effectiveExpanded: Se
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
       const focusedIndex = visibleRows.findIndex((row) => row.node.id === focusedId);
-      if (focusedIndex === -1) return; // nothing focused right now, nothing to move from
+      if (focusedIndex === -1) return;
 
       const focusedRow = visibleRows[focusedIndex];
 
-      // Small helpers so the switch below reads like plain English instead of
-      // repeating "copy the Set, add/remove one id, save it back" every time.
       const openFolder = (id: string) => {
         setExpanded((prev) => new Set(prev).add(id));
       };

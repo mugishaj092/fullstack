@@ -9,7 +9,6 @@ export function nodeOrDescendantMatches(node: VaultNode, query: string): boolean
   return false;
 }
 
-/** Every folder id that has a matching descendant, so it can be force-expanded. */
 export function collectMatchAncestors(
   nodes: VaultNode[],
   query: string,
