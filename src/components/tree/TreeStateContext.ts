@@ -9,6 +9,8 @@ export interface TreeStateContextValue {
   setFocusedId: Dispatch<SetStateAction<string | null>>;
   /** Ref-setter factory so each recursive TreeNode row can register its DOM node for keyboard-focus restoration. */
   registerRef: (id: string) => (el: HTMLElement | null) => void;
+  query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 export const TreeStateContext = createContext<TreeStateContextValue | null>(null);

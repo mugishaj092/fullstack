@@ -6,6 +6,7 @@ export function TreeStateProvider({ children }: { children: ReactNode }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
   const nodeRefs = useRef<Record<string, HTMLElement | null>>({});
 
   const registerRef = useCallback(
@@ -21,7 +22,7 @@ export function TreeStateProvider({ children }: { children: ReactNode }) {
 
   return (
     <TreeStateContext.Provider
-      value={{ expanded, setExpanded, selectedId, setSelectedId, focusedId, setFocusedId, registerRef }}
+      value={{ expanded, setExpanded, selectedId, setSelectedId, focusedId, setFocusedId, registerRef, query, setQuery }}
     >
       {children}
     </TreeStateContext.Provider>

@@ -3,8 +3,12 @@ import type { VaultNode } from '../types/vault';
 import { flattenVisible } from '../lib/tree';
 import { useTreeState } from '../components/tree/TreeStateContext';
 
-/** Keyboard navigation over the flattened visible-rows list. */
-export function useTreeKeyboardNav(rootNodes: VaultNode[]) {
+/**
+ * Keyboard navigation over the flattened visible-rows list.
+ * `effectiveExpanded` (raw `expanded` plus any search-forced folders) drives which rows
+ * are visible; Left/Right arrow mutations still act on the real `expanded` state from context.
+ */
+export function useTreeKeyboardNav(rootNodes: VaultNode[], effectiveExpanded: Set<string>) {
   const { expanded, setExpanded, setSelectedId, focusedId, setFocusedId } = useTreeState();
 
   useEffect(() => {
@@ -15,7 +19,10 @@ export function useTreeKeyboardNav(rootNodes: VaultNode[]) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const visibleRows = useMemo(() => flattenVisible(rootNodes, expanded), [rootNodes, expanded]);
+  const visibleRows = useMemo(
+    () => flattenVisible(rootNodes, effectiveExpanded),
+    [rootNodes, effectiveExpanded],
+  );
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {

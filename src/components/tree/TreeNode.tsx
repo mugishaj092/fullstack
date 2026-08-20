@@ -4,6 +4,7 @@ import { formatKB } from '../../lib/size';
 import { getFileCategory, fileCategoryColorClass } from '../../lib/file-icon';
 import { ChevronIcon, FolderIcon, FileIcon } from './icons';
 import { useTreeState } from './TreeStateContext';
+import { nodeOrDescendantMatches } from '../../lib/search';
 
 export interface TreeNodeProps {
   node: VaultNode;
@@ -15,7 +16,12 @@ export interface TreeNodeProps {
 }
 
 export function TreeNode({ node, depth, expanded, onToggle, selectedId, onSelect }: TreeNodeProps) {
-  const { focusedId, setFocusedId, registerRef } = useTreeState();
+  const { focusedId, setFocusedId, registerRef, query } = useTreeState();
+
+  if (query && !nodeOrDescendantMatches(node, query)) {
+    return null;
+  }
+
   const isSelected = selectedId === node.id;
   const isFocused = focusedId === node.id;
   const stats = computeStats(node);
