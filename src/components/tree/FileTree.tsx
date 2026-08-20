@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Search } from 'lucide-react';
 import vaultData from '../../data/vault-data.json';
 import type { VaultNode } from '../../types/vault';
 import { TreeNode } from './TreeNode';
@@ -35,14 +36,21 @@ export function FileTree() {
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-2">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search vault..."
-        aria-label="Search vault"
-        className="glass w-full shrink-0 rounded-md px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-      />
+      <div className="glass relative flex shrink-0 items-center rounded-md">
+        <Search className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search vault..."
+          aria-label="Search vault"
+          className="w-full rounded-md bg-transparent py-1.5 pl-9 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+        />
+        <kbd className="pointer-events-none absolute right-3 rounded border border-border px-1 py-0.5 text-[10px] text-muted-foreground">
+          ⌘K
+        </kbd>
+      </div>
+      <p className="shrink-0 px-2 text-xs font-medium tracking-wide text-muted-foreground">WORKSPACE</p>
       <div
         role="tree"
         aria-label="Vault"

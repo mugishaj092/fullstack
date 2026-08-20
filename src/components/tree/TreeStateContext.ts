@@ -15,6 +15,7 @@ export interface TreeStateContextValue {
 
 export const TreeStateContext = createContext<TreeStateContextValue | null>(null);
 
+/** Lets spec-05 (properties), spec-06 (keyboard) and spec-07 (search) reach tree state without prop-drilling. */
 export function useTreeState(): TreeStateContextValue {
   const ctx = useContext(TreeStateContext);
   if (!ctx) throw new Error('useTreeState must be used within a TreeStateContext.Provider');

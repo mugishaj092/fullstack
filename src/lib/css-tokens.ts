@@ -6,7 +6,7 @@ export interface CssVariable {
 /**
  * Discovers every custom property declared on `:root` by scanning loaded stylesheets (no
  * hardcoded token list), then reads each one's live value via getComputedStyle. This is how
- * the design-system page stays in sync with globals.css without duplicating its values.
+ * spec-09's design-system page stays in sync with globals.css without duplicating its values.
  */
 function discoverRootVariableNames(): string[] {
   const names = new Set<string>();

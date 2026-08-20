@@ -8,12 +8,6 @@ const EXTENSION_LABELS: Record<string, string> = {
   yml: 'YML',
 };
 
-/**
- * Derives a short (2-3 letter) badge label + a chart-token color for a file row, from its name.
- * "log" is checked against the whole filename (not just the extension) since real log files in
- * this vault ship as plain ".txt" — the word is still literally present in the shipped filename,
- * so this isn't invented data, just a smarter read of the name that's actually there.
- */
 export function getFileTypeBadge(name: string): FileTypeBadge {
   const lower = name.toLowerCase();
   const ext = lower.split('.').pop() ?? '';

@@ -37,10 +37,6 @@ export function FileDetail({ file }: { file: VaultFile }) {
             {badge.label}
           </span>
           <p className="text-sm font-medium text-foreground">No preview available</p>
-          <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-            vault-data.json only stores this file's name and size — there's no actual document
-            content to render a preview from.
-          </p>
         </div>
         <div className="w-72 shrink-0">
           <PropertiesPanel node={file} />
