@@ -1,8 +1,8 @@
 import { Sidebar } from './components/layout/Sidebar'
 import { Dashboard } from './components/layout/Dashboard'
+import { FileDetail } from './components/layout/FileDetail'
 import { TreeStateProvider } from './components/tree/TreeStateProvider'
 import { useTreeState } from './components/tree/TreeStateContext'
-import { PropertiesPanel } from './components/properties/PropertiesPanel'
 import { DesignSystem } from './pages/DesignSystem'
 import vaultData from './data/vault-data.json'
 import type { VaultNode } from './types/vault'
@@ -15,15 +15,7 @@ function MainContent() {
   const node = selectedId ? findNode(forest, selectedId) : null
 
   if (node?.type === 'file') {
-    return (
-      <div>
-        <h1 className="text-4xl font-semibold text-foreground">{node.name}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{node.size}</p>
-        <div className="mt-6 max-w-md">
-          <PropertiesPanel node={node} />
-        </div>
-      </div>
-    )
+    return <FileDetail file={node} />
   }
 
   return <Dashboard node={node} />

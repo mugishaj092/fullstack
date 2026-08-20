@@ -5,7 +5,8 @@ import { Input } from '../components/ui/Input';
 const SPACING_STEPS = [4, 8, 12, 16, 24, 32, 48, 64];
 
 const TYPE_SAMPLES = [
-  { label: 'Display', className: 'text-4xl font-semibold', usage: "App.tsx — selected item's page title" },
+  { label: 'Display', className: 'text-4xl font-semibold', usage: 'Dashboard.tsx — dashboard page title' },
+  { label: 'H1', className: 'text-2xl font-semibold', usage: 'FileDetail.tsx — file name heading' },
   { label: 'Body', className: 'text-sm', usage: 'PropertiesPanel.tsx — row labels/values' },
   { label: 'Small', className: 'text-xs', usage: 'Sidebar.tsx / TreeNode.tsx — captions, pills, hints' },
   { label: 'Caption', className: 'text-[10px] font-semibold', usage: 'TreeNode.tsx / FileTree.tsx — file badges, ⌘K hint' },
@@ -55,8 +56,8 @@ function TypographyScale() {
         ))}
       </div>
       <p className="mt-3 text-xs text-muted-foreground">
-        H1/H2 aren't shown: the app doesn't currently ship a second or third heading tier, and
-        adding one here would mean inventing a size that isn't actually used in any component.
+        H2 isn't shown: the app doesn't currently ship a third heading tier, and adding one here
+        would mean inventing a size that isn't actually used in any component.
       </p>
     </Section>
   );
