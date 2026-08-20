@@ -1,45 +1,31 @@
-export type FileCategory = 'pdf' | 'image' | 'document' | 'spreadsheet' | 'code' | 'other';
-
-const EXTENSION_CATEGORIES: Record<string, FileCategory> = {
-  pdf: 'pdf',
-  png: 'image',
-  jpg: 'image',
-  jpeg: 'image',
-  gif: 'image',
-  svg: 'image',
-  webp: 'image',
-  doc: 'document',
-  docx: 'document',
-  txt: 'document',
-  md: 'document',
-  xls: 'spreadsheet',
-  xlsx: 'spreadsheet',
-  csv: 'spreadsheet',
-  ts: 'code',
-  tsx: 'code',
-  js: 'code',
-  jsx: 'code',
-  json: 'code',
-  yaml: 'code',
-  yml: 'code',
-  ttf: 'code',
-};
-
-/** Derives a coarse category from a file's extension, used to pick an icon and color. */
-export function getFileCategory(name: string): FileCategory {
-  const ext = name.split('.').pop()?.toLowerCase() ?? '';
-  return EXTENSION_CATEGORIES[ext] ?? 'other';
+export interface FileTypeBadge {
+  label: string;
+  colorClass: string;
 }
 
-const CATEGORY_COLOR_CLASSES: Record<FileCategory, string> = {
-  pdf: 'text-chart-1',
-  image: 'text-chart-5',
-  document: 'text-chart-2',
-  spreadsheet: 'text-chart-3',
-  code: 'text-chart-4',
-  other: 'text-muted-foreground',
+const EXTENSION_LABELS: Record<string, string> = {
+  yaml: 'YML',
+  yml: 'YML',
 };
 
-export function fileCategoryColorClass(category: FileCategory): string {
-  return CATEGORY_COLOR_CLASSES[category];
+/**
+ * Derives a short (2-3 letter) badge label + a chart-token color for a file row, from its name.
+ * "log" is checked against the whole filename (not just the extension) since real log files in
+ * this vault ship as plain ".txt" — the word is still literally present in the shipped filename,
+ * so this isn't invented data, just a smarter read of the name that's actually there.
+ */
+export function getFileTypeBadge(name: string): FileTypeBadge {
+  const lower = name.toLowerCase();
+  const ext = lower.split('.').pop() ?? '';
+
+  if (lower.includes('log')) return { label: 'LOG', colorClass: 'text-chart-4 bg-chart-4/15' };
+  if (ext === 'pdf') return { label: 'PDF', colorClass: 'text-chart-1 bg-chart-1/15' };
+  if (['doc', 'docx', 'txt', 'md'].includes(ext)) return { label: 'DOC', colorClass: 'text-chart-2 bg-chart-2/15' };
+  if (['xls', 'xlsx', 'csv'].includes(ext)) return { label: 'XLS', colorClass: 'text-chart-3 bg-chart-3/15' };
+  if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
+    return { label: 'IMG', colorClass: 'text-chart-5 bg-chart-5/15' };
+  }
+
+  const label = EXTENSION_LABELS[ext] ?? (ext || name).slice(0, 3).toUpperCase();
+  return { label, colorClass: 'text-muted-foreground bg-muted/70' };
 }

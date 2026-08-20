@@ -34,19 +34,19 @@ export function FileTree() {
   const hasAnyMatch = !query || forest.some((node) => nodeOrDescendantMatches(node, query));
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex h-full min-h-0 flex-col gap-2">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search vault..."
         aria-label="Search vault"
-        className="w-full rounded-md border border-border bg-input px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+        className="glass w-full shrink-0 rounded-md px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
       />
       <div
         role="tree"
         aria-label="Vault"
-        className="flex flex-col gap-0.5"
+        className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto"
         onKeyDown={handleKeyDown}
       >
         {hasAnyMatch ? (

@@ -1,4 +1,4 @@
-import { FileTree } from './components/tree/FileTree'
+import { Sidebar } from './components/layout/Sidebar'
 import { TreeStateProvider } from './components/tree/TreeStateProvider'
 import { useTreeState } from './components/tree/TreeStateContext'
 import { PropertiesPanel } from './components/properties/PropertiesPanel'
@@ -8,7 +8,7 @@ import { findNode } from './lib/tree'
 
 const forest = vaultData as VaultNode[]
 
-function ConnectedPropertiesPanel() {
+function MainContent() {
   const { selectedId } = useTreeState()
   const node = selectedId ? findNode(forest, selectedId) : null
   return <PropertiesPanel node={node} />
@@ -16,18 +16,14 @@ function ConnectedPropertiesPanel() {
 
 function App() {
   return (
-    <div className="min-h-svh bg-background p-6 text-foreground">
-      <TreeStateProvider>
-        <div className="mx-auto flex max-w-2xl gap-4">
-          <div className="w-72 shrink-0 rounded-lg border border-border bg-card p-3">
-            <FileTree />
-          </div>
-          <div className="flex-1">
-            <ConnectedPropertiesPanel />
-          </div>
-        </div>
-      </TreeStateProvider>
-    </div>
+    <TreeStateProvider>
+      <div className="flex h-screen bg-background text-foreground">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto p-6">
+          <MainContent />
+        </main>
+      </div>
+    </TreeStateProvider>
   )
 }
 

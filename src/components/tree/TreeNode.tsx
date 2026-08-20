@@ -1,8 +1,8 @@
+import { ChevronRight, Folder, FolderOpen } from 'lucide-react';
 import type { VaultNode } from '../../types/vault';
 import { computeStats } from '../../lib/stats';
 import { formatKB } from '../../lib/size';
-import { getFileCategory, fileCategoryColorClass } from '../../lib/file-icon';
-import { ChevronIcon, FolderIcon, FileIcon } from './icons';
+import { getFileTypeBadge } from '../../lib/file-icon';
 import { useTreeState } from './TreeStateContext';
 import { nodeOrDescendantMatches } from '../../lib/search';
 
@@ -28,12 +28,13 @@ export function TreeNode({ node, depth, expanded, onToggle, selectedId, onSelect
   const indentStyle = { paddingLeft: depth * 16 + 8 };
 
   const rowClasses = `flex w-full items-center gap-2 rounded-md py-1.5 pr-2 text-left text-sm transition-colors ${
-    isSelected ? 'bg-accent text-accent-foreground' : 'text-foreground hover:bg-accent/50'
+    isSelected ? 'bg-accent/35 text-foreground' : 'text-foreground hover:bg-accent/15'
   } ${isFocused ? 'outline outline-2 outline-ring outline-offset-[-2px]' : ''}`;
 
   if (node.type === 'folder') {
     const isExpanded = expanded.has(node.id);
     const hasChildren = node.children.length > 0;
+    const hasSubfolderChild = node.children.some((child) => child.type === 'folder');
 
     const handleClick = () => {
       setFocusedId(node.id);
@@ -54,17 +55,23 @@ export function TreeNode({ node, depth, expanded, onToggle, selectedId, onSelect
           style={indentStyle}
           className={rowClasses}
         >
-          {hasChildren ? (
-            <ChevronIcon
-              className={`h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-            />
+          {isExpanded ? (
+            <FolderOpen className={`h-4 w-4 shrink-0 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
           ) : (
-            <span className="h-3.5 w-3.5 shrink-0" />
+            <Folder className={`h-4 w-4 shrink-0 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
           )}
-          <FolderIcon open={isExpanded} className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="flex-1 truncate">{node.name}</span>
-          <span className="shrink-0 rounded-full bg-secondary px-1.5 py-0.5 text-xs text-secondary-foreground">
-            {stats.fileCount}
+          <span className="flex shrink-0 items-center gap-1">
+            <span className="rounded-full bg-muted/70 px-[7px] py-[2px] text-xs text-foreground">
+              {stats.fileCount}
+            </span>
+            {hasSubfolderChild ? (
+              <ChevronRight
+                className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+              />
+            ) : (
+              <span className="inline-block h-3.5 w-3.5" />
+            )}
           </span>
         </button>
         {isExpanded && hasChildren && (
@@ -86,7 +93,7 @@ export function TreeNode({ node, depth, expanded, onToggle, selectedId, onSelect
     );
   }
 
-  const category = getFileCategory(node.name);
+  const badge = getFileTypeBadge(node.name);
 
   return (
     <button
@@ -102,8 +109,9 @@ export function TreeNode({ node, depth, expanded, onToggle, selectedId, onSelect
       style={indentStyle}
       className={rowClasses}
     >
-      <span className="h-3.5 w-3.5 shrink-0" />
-      <FileIcon className={`h-4 w-4 shrink-0 ${fileCategoryColorClass(category)}`} />
+      <span className={`shrink-0 rounded px-1 py-0.5 text-[10px] font-semibold ${badge.colorClass}`}>
+        {badge.label}
+      </span>
       <span className="flex-1 truncate">{node.name}</span>
       <span className="shrink-0 text-xs text-muted-foreground">{formatKB(stats.totalKB)}</span>
     </button>
